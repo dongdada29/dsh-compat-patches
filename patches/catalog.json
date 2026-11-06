@@ -1,0 +1,42 @@
+{
+  "format": 1,
+  "patches": [
+    {
+      "id": "ds-bot-prompt-tools",
+      "title": "修复 DS-Bot 提示词组装时读取空工具列表",
+      "package": "ds-bot",
+      "dshVersions": [
+        "0.2.2-rc.1"
+      ],
+      "pluginVersions": [
+        "0.2.7"
+      ],
+      "modifiedFile": {
+        "path": "src/host/tools.js",
+        "originalSha256": "f3d067af9789bf7061fc2ea02c6db5e1229e6115e60b137a34f0e2e793706b09",
+        "patchedSha256": "9e8dccfb4bafdb00f7c19aa5618106e3ae37c9cf666df2882d7c8d6f4a9a9f50"
+      },
+      "addedFiles": [
+        {
+          "path": "src/host/prompt-assembly-compat.js",
+          "payload": "patches/ds-bot-prompt-tools/prompt-assembly-compat.js",
+          "sha256": "62c9f67b0d63cd247eaf973d28ffac0e130a0a3725b0f75d2962ae1ce125ca1a"
+        }
+      ],
+      "replacements": [
+        {
+          "before": "import { randomUUID } from 'node:crypto'",
+          "after": "import { randomUUID } from 'node:crypto'\nimport { installPromptAssemblyCompat } from './prompt-assembly-compat.js'"
+        },
+        {
+          "before": "  const { ctx, state } = rt\n",
+          "after": "  const { ctx, state } = rt\n  installPromptAssemblyCompat(rt, HIDDEN_TOOLS)\n"
+        },
+        {
+          "before": "        tools: assembled.tools.filter(tool => !HIDDEN_TOOLS.includes(tool.name)),",
+          "after": "        ...(Array.isArray(assembled.tools) ? { tools: assembled.tools.filter(tool => !HIDDEN_TOOLS.includes(tool.name)) } : {}),"
+        }
+      ]
+    }
+  ]
+}

@@ -1,0 +1,10 @@
+{
+  "name": "dsh-compat-patches",
+  "version": "0.1.0",
+  "private": true,
+  "type": "module",
+  "description": "Repeatable, version-checked compatibility repairs for locally installed DSH plugins",
+  "engines": { "node": ">=24" },
+  "scripts": { "test": "node --test", "doctor": "node bin/dsh-patches.mjs doctor" },
+  "license": "MIT"
+}
